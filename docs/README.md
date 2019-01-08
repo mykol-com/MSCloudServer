@@ -12,6 +12,9 @@ This solution provides for the Teleflora Managed Services Linux Point of Sale ap
 
 ![](https://github.com/mykol-com/MSCloudServer/blob/master/msposapp/pics/RTI_cloud1.png)
 
+![](MSCloudServer/msposapp/pics/RTI_cloud1.png)
+      
+
 Requirements
 ------------------------
 
