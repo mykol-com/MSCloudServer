@@ -68,6 +68,7 @@ rootfiles
 -teamd
 tar
 passwd
+rsyslog
 yum-utils
 yum-plugin-ovl
 firewalld
@@ -80,6 +81,7 @@ telnet
 mc
 glibc
 mutt
+sendmail
 samba-client
 slang
 curl
@@ -153,37 +155,35 @@ ln -s /usr2/ostools/bin/rtiuser.pl /usr2/bbx/bin/rtiuser.pl
 echo "bbj 8 installed......"
 systemctl daemon-reload
 systemctl start blm
-sleep 3
-ps -ef | grep basis
-echo ; echo ; echo
-echo "Make sure that you see the -T above and Press enter to continue"
-read X
 mkdir /usr2/bbx
 mkdir /usr2/bbx/bin
 ln -s /usr2/ostools/bin/rtiuser.pl /usr2/bbx/bin/rtiuser.pl
 echo "bbj 8 installed......"
-
 cd /usr/local/bin
 echo "Installing bbj 15......"
 chmod +x /usr/local/bin/update_bbj_15.pl
 /usr/local/bin/update_bbj_15.pl --bbj15
-echo "Fixing init.d service files....."
-sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/blm
-sed -i '1s/^/#\!\/bin\/sh\n/' /etc/init.d/bbj
-systemctl daemon-reload
-systemctl start blm
-systemctl start  bbj
-
 echo "Installing RTI...."
 mount -o loop /usr/local/bin/RTI-16.1.5-Linux.iso /mnt
 cd /mnt
 ./install_rti-16.1.5.pl --nobbxt /usr2/bbx
 /usr2/ostools/bin/updateos.pl --samba-set-passdb
 umount /mnt
+echo "Fixing init.d service files....."
+sed -i '1s/^/#\!\/bin\/bash\n/' /etc/init.d/blm
+sed -i '1s/^/#\!\/bin\/bash\n/' /etc/init.d/bbj
+sed -i '1s/^/#\!\/bin\/bash\n/' /etc/init.d/rti
+systemctl daemon-reload
+systemctl restart blm
+systemctl restart bbj
+systemctl restart rti
 systemctl enable rti
+systemctl enable bbj
+systemctl enable blm
 echo "Installing RTI Florist Directory...."
 wget http://tposlinux.blob.core.windows.net/rti-edir/rti-edir-tel-latest.patch
 wget http://tposlinux.blob.core.windows.net/rti-edir/applypatch.pl
+cd /usr/local/bin
 ./applypatch.pl ./rti-edir-tel-latest.patch
 echo "Installing tfsupport authorized keys...."
 mkdir /home/tfsupport/.ssh
