@@ -40,8 +40,8 @@ find . -name "*monthname.sh" -exec cp -f {} /usr/local/bin/. \;
 find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 
 # add tfsupport usr and generate keys folder, if not there.
-[ ! -d /home/tfsupport ] && useradd tfsupport
-[ ! -d /home/tfsupport/keys ] && mkdir /home/tfsupport/keys && chown tfsupport:tfsupport /home/tfsupport/keys
+#[ ! -d /home/tfsupport ] && useradd tfsupport
+#[ ! -d /home/tfsupport/keys ] && mkdir /home/tfsupport/keys && chown tfsupport:tfsupport /home/tfsupport/keys
 
 # make ssh folder if not there, and copy authorized keys from centos user
 [ ! -d /home/tfsupport/.ssh ] && mkdir /home/tfsupport/.ssh && chown -R tfsupport:tfsupport /home/tfsupport/.ssh && chmod 700 /home/tfsupport/.ssh
@@ -51,20 +51,20 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 [ "`grep tfsupport /etc/sudoers`" == "" ] && echo "tfsupport        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
 
 # Add Admin Menu to tfsupports .profile to be exec on login
-[ "`grep MENU ~/.bash_profile`" == "" ] && echo "sudo ./MENU" >>/home/tfsupport/.bash_profile && echo "exit">>/home/tfsupport/.bash_profile
+#[ "`grep MENU ~/.bash_profile`" == "" ] && echo "sudo ./MENU" >>/home/tfsupport/.bash_profile && echo "exit">>/home/tfsupport/.bash_profile
 
 # change default home dir to /backups from now on
 # Dont do this unless cloud backup dedicated server as well
 #sed -i 's/\/home/\/backups/' /etc/default/useradd
  
 # add /etc/skel/tfrsync
-cp -f ./tfrsync /etc/skel/.
+#cp -f ./tfrsync /etc/skel/.
  
 # make backups folder if its not there.
 [ ! -d /backups ] && mkdir /backups
  
 # Copy cloud admin scripts into place for tfsupport..
-cp -rf /home/$HOST_USER/MSCloudServer/* /home/tfsupport/.
+#cp -rf /home/$HOST_USER/MSCloudServer/* /home/tfsupport/.
 
 # lastly, update everything
 yum -y update
