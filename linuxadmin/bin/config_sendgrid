@@ -1,5 +1,7 @@
 #!/bin/bash
 
+shopt -s nocasematch
+
 ID=$(/usr/bin/id -u)
 [ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
 
@@ -19,7 +21,7 @@ echo "APIKEY: $APIKEY"
 echo "SERVER EMAIL ADDRESS: $EMAIL_FROM"
 echo -n "Are these correct? (Y/N):"
 read REPLY
-[ "$REPLY" != "Y|y" ] && exit 1
+[ "$REPLY" != "Y" ] && exit 1
 
 #1. Remove postfix if there and install and enable sendmail instead. (Good for RH6 and RH7.)
 yum repolist
