@@ -15,6 +15,7 @@ yum clean all
 yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils docker device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui unzip expect
 
 # sync time
+systemctl enable ntpd
 ntpdate pool.ntp.org
 
 # set timezone
@@ -52,18 +53,15 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 # Add tfsupport to sudoers, if not there.
 [ "`grep tfsupport /etc/sudoers`" == "" ] && echo "tfsupport        ALL=(ALL)       NOPASSWD: ALL">>/etc/sudoers
 
-# Add Admin Menu to current users .bash_profile to be exec on login
-[ "`grep msposapp /home/centos/.bash_profile`" == "" ] && echo "cd msposapp" >> /home/centos/.bash_profile && echo "sudo ./MENU" >>/home/centos/.bash_profile
-
 # change default home dir to /backups from now on
 # Dont do this unless cloud backup dedicated server as well
-#sed -i 's/\/home/\/backups/' /etc/default/useradd
+sed -i 's/\/home/\/backups/' /etc/default/useradd
  
 # add /etc/skel/tfrsync
-#cp -f ./tfrsync /etc/skel/.
+cp -f ./tfrsync /etc/skel/.
  
 # make backups folder if its not there.
-#[ ! -d /backups ] && mkdir /backups
+[ ! -d /backups ] && mkdir /backups
  
 # lastly, update everything
 yum -y update

@@ -50,6 +50,10 @@ docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE.teleflora.com >/de
 [ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER ./install-daisy.pl /d/daisy
 [ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER umount /mnt/cdrom
 
+#mount backup data
+[ "POSTYPE" == "daisy" ] && ln -s /backups/tfrync-${SHOPCODE}/d /home/tfpos-${SHOPCODE}/d
+[ "POSTYPE" == "rti" ] && ln -s /backups/tfrync-${SHOPCODE}/usr2 /home/tfpos-${SHOPCODE}/usr2
+
 #move off hosts.deny
 docker exec $CONTAINER mv /etc/hosts.deny /etc/hosts.deny.orig
 

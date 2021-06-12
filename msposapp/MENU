@@ -49,7 +49,6 @@ printf '\u2503''\033[1m'" 115.\033[0m Delete"'\n'
 printf '\u2503''\n'
 printf '\u2503''\033[1m'"---\033[0m System"'\n'
 printf '\u2503''\033[1m'" p.\033[0m Purge"'\n'
-printf '\u2503''\033[1m'" i.\033[0m Install"'\n'
 printf '\u2503''\033[1m'" r.\033[0m Readme"'\n'
 printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
 printf '\u2517''\u2501''\n'
@@ -75,14 +74,14 @@ printf '\u2517''\u2501''\n'
 		./container_connect
 		cd -
 		;;
-	4)
+	5)
 		cd $ROOTDIR/bin
 		./list_nics
 		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
-	5)
+	4)
 		cd $ROOTDIR/bin
 		./data_import
 		echo -ne "${CYAN}Press enter to continue..${NC}"
@@ -157,14 +156,6 @@ printf '\u2517''\u2501''\n'
 		cd $ROOTDIR/bin
 		./delete_vpn
 		echo -ne "${CYAN}Press enter to continue..${NC}"
-		read
-		cd -
-		;;
-	i)
-		cd $ROOTDIR/bin
-		echo -e "${CYAN}"
-		time ./install
-		echo -ne "Press enter to continue..${NC}"
 		read
 		cd -
 		;;

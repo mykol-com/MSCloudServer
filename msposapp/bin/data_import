@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+
+
+ln -s /backups/tfrync-${SHOPCODE}/d /home/tfpos-${SHOPCODE}/d

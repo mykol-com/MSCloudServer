@@ -32,6 +32,8 @@ while :; do
     printf '\u2503''\033[1m'" 4.\033[0m Admin"'\n'
     printf '\u2503''\033[1m'" 5.\033[0m Reports"'\n'
     printf '\u2503''\n'
+    printf '\u2503''\033[1m'" i.\033[0m Install"'\n'
+    printf '\u2503''\033[1m'" p.\033[0m Purge"'\n'
     printf '\u2503''\033[1m'" r.\033[0m Readme"'\n'
     printf '\u2503''\033[1m'" x.\033[0m Exit"'\n'
     printf '\u2517''\u2501''\n'
@@ -64,9 +66,17 @@ while :; do
 		cd -
 		;;
 	i)
-                cd $ROOTDIR/bin
+                cd $ROOTDIR/msposapp/bin
                 ./install
                 echo -ne "Press enter to continue..${NC}"
+                read
+                cd -
+                ;;
+        p)
+                cd $ROOTDIR/msposapp/bin
+                ./prune-docker
+                CONTAINER=`cat ./bin/.container 2>/dev/null`
+                echo -ne "${CYAN}Press enter to continue..${NC}"
                 read
                 cd -
                 ;;
