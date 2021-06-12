@@ -1,15 +1,11 @@
 #!/usr/bin/bash
+#Set Host User HOST_USER=`whoami`
 
-#Set Host User
-HOST_USER=`whoami`
-
-#Environment Name
-[ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype
+#Environment Name [ ! -f ../.envtype ] && echo -n "Env Name: " && read ENVTYPE && echo "$ENVTYPE" >../.envtype
 #POS IP
 [ ! -f .posip ] && echo -n "POS IP Adress: " && read POSIP && echo "$POSIP" >.posip
 #Shopcode
 [ ! -f .shopcode ] && echo -n "POS Shop Code: " && read SHOPCODE && echo "$SHOPCODE" >.shopcode
-
 #install required packages
 yum clean all
 yum -y install net-tools yum-langpacks gtk3 ksh wget firewalld tigervnc-server-minimal mailx nmap time bridge-utils docker device-mapper-libs device-mapper-event-libs ntp lorax anaconda-tui unzip expect
@@ -25,7 +21,8 @@ timedatectl set-timezone America/Chicago
 yum -y install openssl shellinabox
 sed -i 's/4200/443/g' /etc/sysconfig/shellinaboxd
 sed -i 's/^OPTS/\#OPTS/g' /etc/sysconfig/shellinaboxd
-echo "OPTS=\"-s /:SSH:192.168.1.141\"" >>/etc/sysconfig/shellinaboxd
+cp ./*.css /usr/share/shellinabox/.
+echo "OPTS=\"-s /:SSH:`hostname` --user-css Normal:+black-on-white.css,Reverse:-white-on-black.css\"" >>/etc/sysconfig/shellinaboxd
 systemctl enable shellinaboxd
 systemctl start shellinaboxd
 
