@@ -21,6 +21,14 @@ ntpdate pool.ntp.org
 # set timezone
 timedatectl set-timezone America/Chicago
 
+# install shellinabox
+yum -y install openssl shellinabox
+sed -i 's/4200/443/g' /etc/sysconfig/shellinaboxd
+sed -i 's/^OPTS/\#OPTS/g' /etc/sysconfig/shellinaboxd
+echo "OPTS=\"-s /:SSH:192.168.1.141\"" >>/etc/sysconfig/shellinaboxd
+systemctl enable shellinaboxd
+systemctl start shellinaboxd
+
 #install vpn client software
 yum -y install epel-release
 yum -y install strongswan xl2tpd NetworkManager-strongswan strongswan-libipsec
