@@ -1,46 +1,62 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 TFCLOUD_VERSION="2.0"
+
+# verify root
+ID=$(/usr/bin/id -u)
+[ $ID -ne 0 ] && echo "You must be root to run $0." && exit 1
 
 ROOTDIR="$(pwd)"
 export ROOTDIR
 
 CONTAINER=`cat ./bin/.container 2>/dev/null`
-POSIP=`cat ./bin/.posip 2>/dev/null`
 
 trap '' 2
 while :; do
 	clear
     LGGRN='\033[1;32m'                                                                                                                                                                                            
-    BLUE='\033[1;34m'                                                                                                                                                                                              
+   BLUE='\033[1;34m'                                                                                                                                                                                              
+#    BLUE=''                                                                                                                                                                                                      
     GREY='\033[0;37m'                                                                                                                                                                                             
+#    CYAN='\033[1;36m'                                                                                                                                                                                             
     CYAN=''                                                                                                                                                                                             
     NC='\033[0m'                                                                                                                                                                                                  
     clear                                                                                                                                                                                                         
-    echo -e "${GREY}$(date +'%x %l:%M %p')${NC}"
+                                                                                                                                                                                                                  
+    echo -e "${GREY}${TFCLOUD_VERSION}  -  ${BLUE}${HOSTNAME}${GREY}  -  $(date +'%x %l:%M %p')  -  Patched: `date -r /var/log/yum.log`  -  `dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //' | head -1`  -  `cat /etc/redhat-release`${NC}"
     printf '\u250f''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\u2501''\n'
-    echo -e "\u2503${BLUE} @ ${NC}`[ -f .envtype ] && cat .envtype || echo -e Not Installed`${NC}"
-    printf '\u2503'${LGGRN}' )~ Containers'${NC}'\n'
-    printf '\u2503''\u2501''\n'
-    printf '\u2503'" Space    :${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
-    [ -f ./bin/.container ] && echo -e "\u2503 Status   : `docker ps --format "{{.Status}}" 2>/dev/null`" || echo -e "\u2503 Status   : Not running"
-    echo -e "\u2503 Shopcode : `ls /home | grep -v tfsupport | grep tfpos | cut -d- -f2 2>/dev/null`${NC}"
-    [ -f ./bin/.container ] && echo -e "\u2503 Terminal : ${BLUE}http://${POSIP}/${NC}" || echo -e "\u2503 Terminal :"
-    [ "$CONTAINER" != "" ] && echo -e "\u2503 VPN      :`docker exec ${CONTAINER} strongswan status | sed -e 's/\ //' | grep === | grep -v Assoc 2>/dev/null`${NC}" || echo -e "\u2503 VPN      :"
+#    printf '\u2503'🌷${GREY}' $(hostname)'${NC}'\n'
+echo -e "\u2503${BLUE} @ ${NC}`[ -f ../.envtype ] && cat ../.envtype || echo -e Not Installed`${NC}"
+    printf '\u2503'${LGGRN}' )~ Containers''\n'
+    printf '\u2523''\u2501''\n'
+#echo -e "\u2503 Hostname  : ${HOSTNAME} ${NC}"
+#echo -e "\u2503 Type      : `dmidecode | grep Product | grep -v Not | cut -d: -f2 | sed -e 's/\ //' | head -1`${NC}"
+printf '\u2503'" Space    :${NC} $(df -h /backups | tail -1 | awk '{print $4}')"'\n'
+##echo -e "\u2503 Patchd: `date -r /var/log/yum.log`${NC}"
+#    printf '\u2503''\n'
+#echo -e "\u2503 Status  : `docker ps --format "{{.Status}}" 2>/dev/null`${NC}"
+#echo -e "\u2503 Status  : `docker exec ${CONTAINER} hostname 2>/dev/null`${NC}"
+#    echo -e "\u2503 Hostname : `docker exec ${CONTAINER} hostname`${NC}"
+[ -f ./bin/.container ] && echo -e "\u2503 Status   : `docker ps --format "{{.Status}}" 2>/dev/null`" || echo -e "\u2503 Status   : Not running"
+echo -e "\u2503 Snapshot : `ls /home | grep -v tfsupport | grep tfpos | cut -d- -f2 2>/dev/null`${NC}"
+echo -e "\u2503 Terminal : ${BLUE}http://`cat ./bin/.posip 2>/dev/null`${NC}"
+[ -f ./bin/.container ] && echo -e "\u2503 VPN      :`docker exec ${CONTAINER} strongswan status | sed -e 's/\ //' | grep === | grep -v Assoc 2>&1` ${NC}" || echo -e "\u2503 VPN      :"
 printf '\u2503''\n'
 printf '\u2503''\033[1m'"---\033[0m Container"'\n'
 printf '\u2503''\033[1m'" 1.\033[0m Status"'\n'
-printf '\u2503''\033[1m'" 2.\033[0m Stop"'\n'
-printf '\u2503''\033[1m'" 3.\033[0m Connect"'\n'
-printf '\u2503''\033[1m'" 4.\033[0m Data"'\n'
+printf '\u2503''\033[1m'" 2.\033[0m Start"'\n'
+printf '\u2503''\033[1m'" 3.\033[0m Stop"'\n'
+printf '\u2503''\033[1m'" 4.\033[0m Connect"'\n'
+printf '\u2503''\033[1m'" 5.\033[0m Print"'\n'
 printf '\u2503''\n'
 printf '\u2503''\033[1m'"----\033[0m Images"'\n'
 printf '\u2503''\033[1m'" 11.\033[0m List"'\n'
-printf '\u2503''\033[1m'" 12.\033[0m Build"'\n'
+printf '\u2503''\033[1m'" 12.\033[0m OS"'\n'
 printf '\u2503''\033[1m'" 13.\033[0m Stage"'\n'
 printf '\u2503''\033[1m'" 14.\033[0m Delete"'\n'
+printf '\u2503''\033[1m'" 15.\033[0m Data"'\n'
 printf '\u2503''\n'
-printf '\u2503''\033[1m'"-----\033[0m VPN"'\n'
+printf '\u2503''\033[1m'"-----\033[0m VPNs"'\n'
 printf '\u2503''\033[1m'" 111.\033[0m Status"'\n'
 printf '\u2503''\033[1m'" 112.\033[0m Create"'\n'
 printf '\u2503''\033[1m'" 113.\033[0m Start"'\n'
@@ -65,26 +81,27 @@ printf '\u2517''\u2501''\n'
 		;;
 	2)
 		cd $ROOTDIR/bin
-		./stop_container
+		./launch_container
 		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
 		;;
 	3)
 		cd $ROOTDIR/bin
-		./container_connect
-		cd -
+		echo -ne "${CYAN}Press enter to continue..${NC}"
+		read
+		./stop_container
 		;;
 	4)
 		cd $ROOTDIR/bin
-		./list_nics
-		echo -ne "${CYAN}Press enter to continue..${NC}"
-		read
+		./container_connect
+#		echo -ne "${CYAN}Press enter to continue..${NC}"
+#		read
 		cd -
 		;;
 	5)
 		cd $ROOTDIR/bin
-		./data_import
+		./list_nics
 		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
@@ -92,7 +109,6 @@ printf '\u2517''\u2501''\n'
 	p)
 		cd $ROOTDIR/bin
 		./prune-docker
-		CONTAINER=`cat ./bin/.container 2>/dev/null`
 		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
@@ -121,6 +137,13 @@ printf '\u2517''\u2501''\n'
 	14)
 		cd $ROOTDIR/bin
 		./wipe_images
+		echo -ne "${CYAN}Press enter to continue..${NC}"
+		read
+		cd -
+		;;
+	15)
+		cd $ROOTDIR/bin
+		./ssh_sudo.expect 172.17.0.2 root password 'cd /root ; lpr -P istar sample.txt'
 		echo -ne "${CYAN}Press enter to continue..${NC}"
 		read
 		cd -
@@ -170,8 +193,6 @@ printf '\u2517''\u2501''\n'
 		;;
 	r)
 		cat ./README.md | more
-		echo -ne "Press enter to continue..${NC}"
-		read
 		;;
 	x) exit ;;
 	*) ;;

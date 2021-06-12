@@ -17,7 +17,7 @@ CONTAINER=`docker run -d -it --name=$SHOPCODE.teleflora.com --rm --privileged -v
 echo $CONTAINER>.container
 
 #configure the second nic for host networking by passing eth1 through to the container
-./pipework --direct-phys eth1 $CONTAINER ${POSIP}/24@192.168.222.1
+./pipework --direct-phys eth1 $CONTAINER ${POSIP}/24@192.168.1.254
 POSIP=`docker exec $CONTAINER /usr/sbin/ifconfig eth1 | grep broad | sed -e 's/    //g' | cut -d ' ' -f2`
 echo "$POSIP" > .posip
 
@@ -44,11 +44,11 @@ docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE.teleflora.com >/de
 [ "$POSTYPE" == daisy ] && docker exec $CONTAINER ./bin/updateos.pl --daisy8
 
 #install daisy
-[ "$POSTYPE" == daisy ] docker exec $CONTAINER mkdir /mnt/cdrom
-[ "$POSTYPE" == daisy ] docker exec $CONTAINER mount -o loop daisy_10.1.22_rhel7.iso /mnt/cdrom
-[ "$POSTYPE" == daisy ] docker exec $CONTAINER cp /mnt/cdrom/install-daisy.pl .
-[ "$POSTYPE" == daisy ] docker exec $CONTAINER ./install-daisy.pl /d/daisy
-[ "$POSTYPE" == daisy ] docker exec $CONTAINER umount /mnt/cdrom
+[ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER mkdir /mnt/cdrom
+[ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER mount -o loop daisy_10.1.22_rhel7.iso /mnt/cdrom
+[ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER cp /mnt/cdrom/install-daisy.pl .
+[ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER ./install-daisy.pl /d/daisy
+[ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER umount /mnt/cdrom
 
 #move off hosts.deny
 docker exec $CONTAINER mv /etc/hosts.deny /etc/hosts.deny.orig
