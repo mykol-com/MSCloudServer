@@ -65,7 +65,8 @@ find . -name "*recon.sh" -exec cp -f {} /usr/local/bin/. \;
 sed -i 's/\/home/\/backups/' /etc/default/useradd
  
 # add /etc/skel/tfrsync
-cp -f ./tfrsync /etc/skel/.
+# push this to user create script for backups.
+#cp -f ./tfrsync /etc/skel/.
  
 # make backups folder if its not there.
 [ ! -d /backups ] && mkdir /backups

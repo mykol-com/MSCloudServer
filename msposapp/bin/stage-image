@@ -51,8 +51,8 @@ docker exec $CONTAINER ./bin/updateos.pl --hostname=$SHOPCODE.teleflora.com >/de
 [ "$POSTYPE" == "daisy" ] && docker exec $CONTAINER umount /mnt/cdrom
 
 #mount backup data
-[ "POSTYPE" == "daisy" ] && ln -s /backups/tfrync-${SHOPCODE}/d /home/tfpos-${SHOPCODE}/d
-[ "POSTYPE" == "rti" ] && ln -s /backups/tfrync-${SHOPCODE}/usr2 /home/tfpos-${SHOPCODE}/usr2
+#[ "POSTYPE" == "daisy" ] && ln -s /backups/tfrync-${SHOPCODE}/d /home/tfpos-${SHOPCODE}/d
+#[ "POSTYPE" == "rti" ] && ln -s /backups/tfrync-${SHOPCODE}/usr2 /home/tfpos-${SHOPCODE}/usr2
 
 #move off hosts.deny
 docker exec $CONTAINER mv /etc/hosts.deny /etc/hosts.deny.orig
@@ -66,10 +66,10 @@ docker exec $CONTAINER yum -y install strongswan strongswan-libipsec
 #docker cp ./istar.rpm ${CONTAINER}:/tmp
 #docker exec $CONTAINER rpm -i /tmp/istar.rpm
 
-#create main store vpn if desired
-echo -n "Create Primary VPN for this POS? (y/n): "
-read PRIMARY_VPN
-[ "$PRIMARY_VPN" == "y" ] && ./create_mainstore_vpn && docker exec ${CONTAINER} strongswan start
+#create vpn if desired
+echo -n "Create VPN? (y/n): "
+read VPN
+[ "$VPN" == "y" ] && ./create_vpn && docker exec ${CONTAINER} strongswan start
 
 #update OS
 docker exec $CONTAINER yum -y update
